@@ -1,6 +1,8 @@
 #python3.9 
 #!/usr/bin/env python
 
+## https://urlhaus.abuse.ch/
+
 #limitation 
 # 1. incomplete data pull from haus api
 #      the api only provides 100 urls eventhough there are more than 100 urls that are reported from the lookup.
@@ -100,7 +102,15 @@ allFileContent = f.read()
 f.close()
 allFileContent = allFileContent.replace(" ", "")
 splitContent = re.split (",|\n", allFileContent)
+temptSplitContent = []
 
+#append www. on domain that does not have it
+for entry in splitContent:
+    if("www." not in entry and isDomain(entry)):
+        temptSplitContent.append("www." + entry)
+    temptSplitContent.append(entry)
+
+splitContent = temptSplitContent
 
 
 #set up csv file
@@ -169,6 +179,6 @@ for eachEntry in splitContent:
             continue
 
     else:
-        print(eachEntry + " is not an ip or a domain")
+        print("\"" + eachEntry + "\"" + " is not an ip or a domain")
 
 print("Please check enrichedURLhaus.csv")
