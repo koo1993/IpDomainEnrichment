@@ -84,18 +84,15 @@ def loopThroughUrlsForOnline(dicForAllTags, urlsJson, mainRowFix):
     return isOnlineSeen
 
 
-# isOnlineOnly = False
+
 
 # start of python logic / main
 parser = ArgumentParser(description="Enrich IP or domain from URLhaus. currently, only online url will be fetched. A file called enriched.csv will be produced")
 parser.add_argument("-i", dest="filename", required=True,
                     help="input file with its content being domain or ip separated by , or newline", metavar="FilePath",
                     type=lambda x: isValidFileForPaser(parser, x))
-# parser.add_argument("--online", dest="yesNo", required=False,
-#                     help="Use this argument if you only want to see online only", metavar="Y/N")
 args = parser.parse_args()
 
-# isOnlineOnly = True if (args.yesNo == "Y" or args.yesNo == "y" ) else False 
 
 #format filecontent and split
 f = open (args.filename, "r")
@@ -108,7 +105,7 @@ splitContent = re.split (",|\n", allFileContent)
 
 #set up csv file
 header = ["Domain Or Ip", "Source", "Firstseen Date", "Url Count (how many url from this host are reported malicious)", "SURBL blacklist", "spamhaus_dbl", "Url", "Online/Offline", "Tags (if offline, display all the unique tags)"]
-f = open('enriched.csv', 'w', encoding='UTF8')
+f = open('enrichedURLhaus.csv', 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
 
@@ -174,3 +171,4 @@ for eachEntry in splitContent:
     else:
         print(eachEntry + " is not an ip or a domain")
 
+print("Please check enrichedURLhaus.csv")
