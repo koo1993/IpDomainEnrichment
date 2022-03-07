@@ -9,7 +9,7 @@
 
 
 from argparse import ArgumentParser
-import os.path, re, csv, sys, requests, json, urllib3
+import os.path, re, csv, requests, json
 
 def isValidFileForPaser(parser, arg):
     if not os.path.exists(arg):
@@ -71,7 +71,7 @@ for eachData in jsonResponse:
     
     if(eachData["hostname"]  in hostMapping):
         hostMapping[eachData["hostname"]].append(index)
-        print("duplicated found hostMapping: " + str(eachData["hostname"]))
+        # print("duplicated found hostMapping: " + str(eachData["hostname"]))
     else:
         hostMapping[eachData["hostname"]] = [index]
     index += 1
