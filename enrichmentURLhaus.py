@@ -49,8 +49,8 @@ def queryDomainHaus(domain):
     # Parse the response from the API
     response = response.data.decode("utf-8", "ignore")
     # Convert response to JSON
-    json_response = json.loads(response)
-    return json_response
+    jsonResponse = json.loads(response)
+    return jsonResponse
 
 def listToStringWithComma(listOfString):
     return ", ".join([str(item) for item in listOfString])
@@ -60,7 +60,7 @@ def dicKeyToStringWithComma(dicWithKey):
 
 
 # return true if tabulated with data , else false
-# its a big functions that edits dicForAllTag to contains all the unique tags and write to CSV files
+# its a multi function that edits dicForAllTag to contains all the unique tags and write to CSV files
 def loopThroughUrlsForOnline(dicForAllTags, urlsJson, mainRowFix):
     isOnlineSeen = False
 
