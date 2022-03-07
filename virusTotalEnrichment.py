@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #python3.9 
 
-# From virustotal website instead of using API
+
+
+# From virustotal website instead of using API, (possible unlimited lookup and for lookup only)
 # non-official way to fetch data from virus total.
 from argparse import ArgumentParser
 import os.path, re, csv, requests, json
@@ -52,12 +54,15 @@ parser.add_argument("-i", dest="filename", required=True,
                     type=lambda x: isValidFileForPaser(parser, x))
 args = parser.parse_args()
 
+print("##### Still work in progress, able to scrap most of the content as per virus total search, but currently only shows how many vendor flag as malicious #### ")
+
 #format filecontent and split
 f = open (args.filename, "r")
 allFileContent = f.read()
 f.close()
 allFileContent = allFileContent.replace(" ", "")
 splitContent = re.split (",|\n", allFileContent)
+
 
 
 
@@ -72,6 +77,7 @@ for eachEntry in splitContent:
         print(eachEntry + " malicious: " + str(data["data"]["attributes"]["last_analysis_stats"]["malicious"]))
         print(f"[+] found: {eachEntry}")
 
+
     #for domains
     elif(isDomain(eachEntry)):   
         print("")
@@ -79,6 +85,7 @@ for eachEntry in splitContent:
         data = requests.get(url, headers=headers).json()
         print(eachEntry + " malicious: " + str(data["data"]["attributes"]["last_analysis_stats"]["malicious"]))
         print(f"[+] found: {eachEntry}")
+
 
     else:
         print("\"" + eachEntry + "\"" + " is not an ip or a domain")
