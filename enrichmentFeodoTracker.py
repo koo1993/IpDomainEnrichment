@@ -80,7 +80,7 @@ for eachData in jsonResponse:
 # print (hostMapping)
 
 #set up csv file
-header = ["Domain Or Ip", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
 f = open('enrichedFeodoTracker.csv', 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
@@ -89,8 +89,8 @@ writer.writerow(header)
 for eachEntry in splitContent:
     # For IP
     if(isIp(eachEntry)):
-        #header = ["Domain Or Ip", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
-        mainRow = [eachEntry]
+        #header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+        mainRow = [eachEntry, "FeodoTracker"]
 
         if eachEntry in ipMapping:
             print(f"[+] found: {eachEntry}")
@@ -112,8 +112,8 @@ for eachEntry in splitContent:
    
     #for domains
     elif(isDomain(eachEntry)):
-        #header = ["Domain Or Ip", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
-        mainRow = [eachEntry]
+        #header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+        mainRow = [eachEntry, "FeodoTracker"]
         
         if eachEntry in hostMapping:
             print(f"[+] found: {eachEntry}")

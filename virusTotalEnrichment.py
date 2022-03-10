@@ -8,6 +8,9 @@
 from argparse import ArgumentParser
 import os.path, re, csv, requests, json
 
+def listToStringWithComma(listOfString):
+    return ", ".join([str(item) for item in listOfString])
+
 
 def isDomain(domainString):
     domainPattern = re.compile(
@@ -54,7 +57,6 @@ parser.add_argument("-i", dest="filename", required=True,
                     type=lambda x: isValidFileForPaser(parser, x))
 args = parser.parse_args()
 
-print("##### Still work in progress, able to scrap most of the content as per virus total search, but currently only shows how many vendor flag as malicious #### ")
 
 #format filecontent and split
 f = open (args.filename, "r")
@@ -63,7 +65,11 @@ f.close()
 allFileContent = allFileContent.replace(" ", "")
 splitContent = re.split (",|\n", allFileContent)
 
-
+#set up csv file
+header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+f = open('enrichedVirusTotal.csv', 'w', encoding='UTF8')
+writer = csv.writer(f)
+writer.writerow(header)
 
 
 
@@ -71,20 +77,46 @@ splitContent = re.split (",|\n", allFileContent)
 for eachEntry in splitContent:
     # For IP
     if(isIp(eachEntry)):
-        print("")
-        url = "https://www.virustotal.com/ui/ip_addresses/" + eachEntry
-        data = requests.get(url, headers=headers).json()
-        print(eachEntry + " malicious: " + str(data["data"]["attributes"]["last_analysis_stats"]["malicious"]))
-        print(f"[+] found: {eachEntry}")
+        
 
+        url = "https://www.virustotal.com/ui/ip_addresses/" + eachEntry
+        response = requests.get(url, headers=headers)
+
+        if(response.status_code == 200):
+            data = response.json()
+            mainRow = [eachEntry, "virustotal"] 
+            # header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
+            writer.writerow(mainRow)
+            print(f"[+] found: {eachEntry}")
+            
+        else: 
+            print("***Virus total do not have the information for " + eachEntry)
+            print("***please rerun virusTotalEnrichment.py again after 2mins for virustotal to update")
 
     #for domains
     elif(isDomain(eachEntry)):   
-        print("")
+  
         url = "https://www.virustotal.com/ui/domains/" + eachEntry
-        data = requests.get(url, headers=headers).json()
-        print(eachEntry + " malicious: " + str(data["data"]["attributes"]["last_analysis_stats"]["malicious"]))
-        print(f"[+] found: {eachEntry}")
+        response = requests.get(url, headers=headers)
+        
+        if(response.status_code == 200):
+            data = response.json()
+            mainRow = [eachEntry, "virustotal"] 
+            # header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
+            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
+            writer.writerow(mainRow)
+            print(f"[+] found: {eachEntry}")
+       
+        else: 
+            print("***Virus total do not have the information for " + eachEntry)
+            print("***please rerun virusTotalEnrichment.py again after 2mins for virustotal to update")
 
 
     else:
