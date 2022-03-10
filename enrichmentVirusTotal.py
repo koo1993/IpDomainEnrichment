@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #python3.9 
 
-
+# Todo: add concurrency for faster lookup, but may need to change the whole structure of the code
 
 # From virustotal website instead of using API, (possible unlimited lookup and for lookup only)
 # non-official way to fetch data from virus total.
 from argparse import ArgumentParser
-import os.path, re, csv, requests, json
+import os.path, re, csv, requests, json, urllib3
 
 def listToStringWithComma(listOfString):
     return ", ".join([str(item) for item in listOfString])
@@ -55,6 +55,8 @@ parser = ArgumentParser(description="Enrich IP or domain/host from VirusTotal")
 parser.add_argument("-i", dest="filename", required=True,
                     help="input file with its content being domain or ip separated by , or newline", metavar="FilePath",
                     type=lambda x: isValidFileForPaser(parser, x))
+parser.add_argument("-o", dest="ofilename", required=False,
+                    help="Output file path and name", metavar="FilePath")
 args = parser.parse_args()
 
 
@@ -65,12 +67,16 @@ f.close()
 allFileContent = allFileContent.replace(" ", "")
 splitContent = re.split (",|\n", allFileContent)
 
+fileNamePath = 'enrichedVirusTotal.csv'
+
+if(args.ofilename):
+    fileNamePath = args.ofilename
+
 #set up csv file
 header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
-f = open('enrichedVirusTotal.csv', 'w', encoding='UTF8')
+f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
-
 
 
 # doing enrichment for each entry
@@ -123,3 +129,4 @@ for eachEntry in splitContent:
         print("\"" + eachEntry + "\"" + " is not an ip or a domain")
 
 
+print(f"Please check {fileNamePath}")

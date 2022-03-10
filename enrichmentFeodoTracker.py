@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #python3.9 
 
 
@@ -44,6 +44,8 @@ parser = ArgumentParser(description="Enrich IP or domain/host from feodotracker 
 parser.add_argument("-i", dest="filename", required=True,
                     help="input file with its content being domain or ip separated by , or newline", metavar="FilePath",
                     type=lambda x: isValidFileForPaser(parser, x))
+parser.add_argument("-o", dest="ofilename", required=False,
+                    help="Output file path and name", metavar="FilePath")
 args = parser.parse_args()
 
 #format filecontent and split
@@ -76,12 +78,15 @@ for eachData in jsonResponse:
         hostMapping[eachData["hostname"]] = [index]
     index += 1
 
-# print (ipMapping)
-# print (hostMapping)
+
+fileNamePath = 'enrichedFeodoTracker.csv'
+
+if(args.ofilename):
+    fileNamePath = args.ofilename
 
 #set up csv file
 header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
-f = open('enrichedFeodoTracker.csv', 'w', encoding='UTF8')
+f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
 
@@ -136,4 +141,4 @@ for eachEntry in splitContent:
     else:
         print("\"" + eachEntry + "\"" + " is not an ip or a domain")
 
-print("Please check enrichedFeodoTracker.csv")
+print(f"Please check {fileNamePath}")

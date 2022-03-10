@@ -1,5 +1,5 @@
+#!/usr/bin/env python3
 #python3.9 
-#!/usr/bin/env python
 
 ## https://urlhaus.abuse.ch/
 
@@ -93,6 +93,8 @@ parser = ArgumentParser(description="Enrich IP or domain from URLhaus. currently
 parser.add_argument("-i", dest="filename", required=True,
                     help="input file with its content being domain or ip separated by , or newline", metavar="FilePath",
                     type=lambda x: isValidFileForPaser(parser, x))
+parser.add_argument("-o", dest="ofilename", required=False,
+                    help="Output file path and name", metavar="FilePath")
 args = parser.parse_args()
 
 
@@ -112,10 +114,15 @@ for entry in splitContent:
 
 splitContent = temptSplitContent
 
+fileNamePath = 'enrichedURLhaus.csv'
+
+if(args.ofilename):
+    fileNamePath = args.ofilename
 
 #set up csv file
 header = ["Domain Or Ip", "Source", "Firstseen Date", "Url Count (how many url from this host are reported malicious)", "SURBL blacklist", "spamhaus_dbl", "Url", "Online/Offline", "Tags (if offline, display all the unique tags)"]
-f = open('enrichedURLhaus.csv', 'w', encoding='UTF8')
+
+f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
 
@@ -181,4 +188,4 @@ for eachEntry in splitContent:
     else:
         print("\"" + eachEntry + "\"" + " is not an ip or a domain")
 
-print("Please check enrichedURLhaus.csv")
+print(f"Please check {fileNamePath}")
