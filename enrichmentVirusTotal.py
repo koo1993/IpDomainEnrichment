@@ -90,14 +90,18 @@ for eachEntry in splitContent:
 
         if(response.status_code == 200):
             data = response.json()
-            mainRow = [eachEntry, "virustotal"] 
-            # header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
-            writer.writerow(mainRow)
-            print(f"[+] found: {eachEntry}")
+        
+            if( int(data["data"]["attributes"]["last_analysis_stats"]["malicious"]) > 0 or int(data["data"]["attributes"]["last_analysis_stats"]["suspicious"]) >0 ):
+                mainRow = [eachEntry, "virustotal"] 
+                # header = ["domain or ip"", "source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
+                writer.writerow(mainRow)
+                print(f"[+] found: {eachEntry} suspicious/malicious")
+            else:
+                print(f"[+] found: {eachEntry} benign")
             
         else: 
             print("***Virus total do not have the information for " + eachEntry)
@@ -111,14 +115,17 @@ for eachEntry in splitContent:
         
         if(response.status_code == 200):
             data = response.json()
-            mainRow = [eachEntry, "virustotal"] 
-            # header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
-            mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
-            writer.writerow(mainRow)
-            print(f"[+] found: {eachEntry}")
+            if( int(data["data"]["attributes"]["last_analysis_stats"]["malicious"]) > 0 or int(data["data"]["attributes"]["last_analysis_stats"]["suspicious"]) >0 ):
+                mainRow = [eachEntry, "virustotal"] 
+                # header = ["domain or ip"", "source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["malicious"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["suspicious"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["harmless"] )
+                mainRow.append( data["data"]["attributes"]["last_analysis_stats"]["undetected"] + data["data"]["attributes"]["last_analysis_stats"]["timeout"] )
+                writer.writerow(mainRow)
+                print(f"[+] found: {eachEntry} suspicious/malicious")
+            else:
+                print(f"[+] found: {eachEntry} benign")
        
         else: 
             print("***Virus total do not have the information for " + eachEntry)
