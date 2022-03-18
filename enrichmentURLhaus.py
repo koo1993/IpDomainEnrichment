@@ -120,7 +120,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["Domain Or Ip", "Source", "Firstseen Date", "Url Count (how many url from this host are reported malicious)", "SURBL blacklist", "spamhaus_dbl", "Url", "Online/Offline", "Tags (if offline, display all the unique tags)"]
+header = ["domain or ip", "source", "Firstseen Date", "Url Count (how many url from this host are reported malicious)", "SURBL blacklist", "spamhaus_dbl", "Url", "Online/Offline", "Tags (if offline, display all the unique tags)"]
 
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)

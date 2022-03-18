@@ -85,7 +85,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+header = ["domain or ip", "source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)

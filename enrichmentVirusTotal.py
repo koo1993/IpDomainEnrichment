@@ -73,7 +73,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["Domain Or Ip", "Source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+header = ["domain or ip", "source", "malicious", "suspicious", "harmless", "undetected/timeout"]
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
