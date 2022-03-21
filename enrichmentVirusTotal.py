@@ -6,7 +6,7 @@
 # From virustotal website instead of using API, (possible unlimited lookup and for lookup only)
 # non-official way to fetch data from virus total.
 from argparse import ArgumentParser
-import os.path, re, csv, requests, json, urllib3
+import os.path, re, csv, requests, json, urllib3, time
 
 def listToStringWithComma(listOfString):
     return ", ".join([str(item) for item in listOfString])
@@ -106,6 +106,8 @@ for eachEntry in splitContent:
         else: 
             print("***Virus total do not have the information for " + eachEntry)
             print("***please rerun virusTotalEnrichment.py again after 2mins for virustotal to update")
+        print("sleep for 3 sec")
+        time.sleep(3)
 
     #for domains
     elif(isDomain(eachEntry)):   
@@ -130,7 +132,8 @@ for eachEntry in splitContent:
         else: 
             print("***Virus total do not have the information for " + eachEntry)
             print("***please rerun virusTotalEnrichment.py again after 2mins for virustotal to update")
-
+        print("sleep for 3 sec")
+        time.sleep(3)
 
     else:
         print("\"" + eachEntry + "\"" + " is not an ip or a domain")
