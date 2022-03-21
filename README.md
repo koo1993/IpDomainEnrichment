@@ -5,7 +5,7 @@ Enrichment module for Ip and domains
 
 
 # Usage
-python3 \<<python file\>> -i \<<domains/ips file\>>
+python3 \<path to python file\> -i \<path to domains/ips file\>
 
 ## enrichmentURLhaus.py
 Bulk api pull from https://urlhaus.abuse.ch/ 
@@ -35,10 +35,10 @@ Look up data from https://feodotracker.abuse.ch/
 
 ## enrichmentVirusTotal.py
 Look up data from [VirusTotal](https://www.virustotal.com/)
-1. From virustotal website instead of using API
-2. non-official way to fetch data from virus total.
+1. Using virustotal web key instead of using API key, non-official way to fetch data from virus total.
+2. Only the scoring are extracted from the request. Able to include more information like: tags, country, as_owner (json data can be viewed here: https://pastebin.com/G9X8UN5c)
 
-**Doing bulk enrichmentVirusTotal may result in ip being rate limited**
+**\*Doing bulk enrichmentVirusTotal may result in your ip being rate limited**
 
 ### Data column
 | domain_or_ip | source (Data source from) | malicious (how many vendors from virustotal are marked as malicious) | suspicious | harmless | undetected_timeout |
