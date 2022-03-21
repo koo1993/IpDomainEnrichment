@@ -47,12 +47,12 @@ df2 = pd.read_csv('./enrichedURLhaus.csv')
 df3 = pd.read_csv('./enrichedFeodoTracker.csv')
 
 # Merge the two dataframes, using _ID column as key
-df4 = pd.merge(df1, df2, on = 'domain or ip', how = "outer")
-df4.set_index('domain or ip', inplace = True)
+df4 = pd.merge(df1, df2, on = 'domain_or_ip', how = "outer")
+df4.set_index('domain_or_ip', inplace = True)
 
 # Merge the two dataframes, using _ID column as key
-df5 = pd.merge(df4, df3, on = 'domain or ip', how = "outer")
-df5.set_index('domain or ip', inplace = True)
+df5 = pd.merge(df4, df3, on = 'domain_or_ip', how = "outer")
+df5.set_index('domain_or_ip', inplace = True)
 
 # Write it to a new CSV file
 df5.to_csv('CSV3.csv')

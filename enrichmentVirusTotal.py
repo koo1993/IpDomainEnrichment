@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 #python3.9 
 
-# Todo: add concurrency for faster lookup, but may need to change the whole structure of the code
 
-# From virustotal website instead of using API, (possible unlimited lookup and for lookup only)
-# non-official way to fetch data from virus total.
 from argparse import ArgumentParser
 import os.path, re, csv, requests, json, urllib3, time
 
@@ -73,7 +70,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["domain or ip", "source", "malicious", "suspicious", "harmless", "undetected/timeout"]
+header = ["domain_or_ip", "source", "malicious", "suspicious", "harmless", "undetected_timeout"]
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)

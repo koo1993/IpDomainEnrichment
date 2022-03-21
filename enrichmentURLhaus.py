@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
 #python3.9 
 
-## https://urlhaus.abuse.ch/
 
-#limitation 
-# 1. incomplete data pull from haus api
-#      the api only provides 100 urls eventhough there are more than 100 urls that are reported from the lookup.
-# 2. only shows url that are online, offline are ignored. 
-# 3. API only return the information for subdomain related to the domain.
-#       Example: google.com host lookup does not look into drive.google.com. 
 
 from argparse import ArgumentParser
 import os.path, re, csv, sys, requests, json, urllib3
@@ -120,7 +113,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["domain or ip", "source", "Firstseen Date", "Url Count (how many url from this host are reported malicious)", "SURBL blacklist", "spamhaus_dbl", "Url", "Online/Offline", "Tags (if offline, display all the unique tags)"]
+header = ["domain_or_ip", "source", "first_seen", "url_count", "surbl", "spamhaus_dbl", "url", "status", "tags"]
 
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)

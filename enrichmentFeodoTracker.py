@@ -2,10 +2,6 @@
 #python3.9 
 
 
-## https://feodotracker.abuse.ch/
-# data set used is only from recommended ip block list, which contains only active botnet c2 server
-# or have beeen active in the past hours
-# lower false positive
 
 
 from argparse import ArgumentParser
@@ -85,7 +81,7 @@ if(args.ofilename):
     fileNamePath = args.ofilename
 
 #set up csv file
-header = ["domain or ip", "source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+header = ["domain_or_ip", "source", "port", "status", "host_name" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
 f = open(fileNamePath, 'w', encoding='UTF8')
 writer = csv.writer(f)
 writer.writerow(header)
@@ -94,7 +90,7 @@ writer.writerow(header)
 for eachEntry in splitContent:
     # For IP
     if(isIp(eachEntry)):
-        #header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+        #header = ["Domain Or Ip", "Source", "port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
         mainRow = [eachEntry, "FeodoTracker"]
 
         if eachEntry in ipMapping:
@@ -117,7 +113,7 @@ for eachEntry in splitContent:
    
     #for domains
     elif(isDomain(eachEntry)):
-        #header = ["Domain Or Ip", "Source", "Port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
+        #header = ["Domain Or Ip", "source", "port", "status", "hostname" , "as_number", "as_name", "country", "first_seen", "last_seen", "malware"]
         mainRow = [eachEntry, "FeodoTracker"]
         
         if eachEntry in hostMapping:
