@@ -46,4 +46,4 @@ Look up data from [VirusTotal](https://www.virustotal.com/)
 
 
 ## scriptIntegrationCheck.py
-A Script that runs all enrichment scripts and creates a hitList.csv that register which enrichment script has a hit.
+A script that runs all enrichment scripts and creates a hitList.csv that register which enrichment script has a hit.
