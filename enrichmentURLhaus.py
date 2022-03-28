@@ -121,7 +121,7 @@ writer.writerow(header)
 
 
 # Prepare HTTPSConnectionPool for faster bulk query
-pool = urllib3.HTTPSConnectionPool('urlhaus-api.abuse.ch', port=443, maxsize=10)
+pool = urllib3.HTTPSConnectionPool('urlhaus-api.abuse.ch', port=443, maxsize=20)
 urllib3.disable_warnings()
 
 # doing enrichment for each entry
