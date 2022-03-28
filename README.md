@@ -43,3 +43,7 @@ Look up data from [VirusTotal](https://www.virustotal.com/)
 ### Data column
 | domain_or_ip | source (Data source from) | malicious (how many vendors from virustotal are marked as malicious) | suspicious | harmless | undetected_timeout |
 |--------------|---------------------------|----------------------------------------------------------------------|------------|----------|--------------------|
+
+
+## scriptIntegrationCheck.py
+A Script that runs all enrichment scripts and creates a hitList.csv that register which enrichment script has a hit.
