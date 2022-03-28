@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import subprocess, os.path, re, csv
 from argparse import ArgumentParser
-import pandas as pd
-#require pip3 install pandas
+#import pandas as pd
+##require pip3 install pandas
 
 def isValidFileForPaser(parser, arg):
     if not os.path.exists(arg):
@@ -31,47 +31,72 @@ print("\n### creating csv file from enrichmentVirusTotal.py ###")
 subprocess.call(["./enrichmentVirusTotal.py", "-i", args.filename])
 
 
-# #format filecontent and split
-# f = open (args.filename, "r")
-# allFileContent = f.read()
-# f.close()
-# allFileContent = allFileContent.replace(" ", "")
-# splitContent = re.split (",|\n", allFileContent)
-# temptSplitContent = []
+#format filecontent and split
+f = open (args.filename, "r")
+allFileContent = f.read()
+f.close()
+allFileContent = allFileContent.replace(" ", "")
+splitContent = re.split (",|\n", allFileContent)
 
-trackerDict = {}
+fileNamePath = 'hitList.csv'
 
-# Read the files into two dataframes.
-df1 = pd.read_csv('./enrichedVirusTotal.csv')
-df2 = pd.read_csv('./enrichedURLhaus.csv')
-df3 = pd.read_csv('./enrichedFeodoTracker.csv')
+urlhausList = []
+feodoTrackerList = []
+virusTotalList = []
 
-# Merge the two dataframes, using _ID column as key
-df4 = pd.merge(df1, df2, on = 'domain_or_ip', how = "outer")
-df4.set_index('domain_or_ip', inplace = True)
+with open("./enrichedURLhaus.csv", 'r') as readObj:
+    csvReader = csv.reader(readObj)
+    header = next(csvReader)
 
-# Merge the two dataframes, using _ID column as key
-df5 = pd.merge(df4, df3, on = 'domain_or_ip', how = "outer")
-df5.set_index('domain_or_ip', inplace = True)
+    if header != None:
+        for row in csvReader:
+            if row[0] not in urlhausList:
+                urlhausList.append(row[0].replace("www.", ""))
 
-# Write it to a new CSV file
-df5.to_csv('CSV3.csv')
+with open("./enrichedFeodoTracker.csv", 'r') as readObj:
+    csvReader = csv.reader(readObj)
+    header = next(csvReader)
+
+    if header != None:
+        for row in csvReader:
+            if row[0] not in feodoTrackerList:
+                feodoTrackerList.append(row[0])
+
+with open("./enrichedVirusTotal.csv", 'r') as readObj:
+    csvReader = csv.reader(readObj)
+    header = next(csvReader)
+
+    if header != None:
+        for row in csvReader:
+            if(int(row[2]) > 0 or int(row[3]) > 0):
+                virusTotalList.append(row[0])
 
 
-# process Virustotal csv first
-# print("### processing ./enrichedVirusTotal.csv ###")
-# with open('./enrichedVirusTotal.csv', newline='') as csvfile:
-#     reader = csv.DictReader(csvfile)
-#     for row in reader:
-#         # print(row)
-#         if(int(row["malicious"]) > 0 or int(row["suspicious"]) > 0):
-#             trackerDict[row["domain or ip"]] = {}
-#             trackerDict[row["domain or ip"]]["source"] = row["source"] 
-#             trackerDict[row["domain or ip"]]["malicious"] = row["malicious"] 
-#             trackerDict[row["domain or ip"]]["suspicious"] = row["suspicious"]
+header = ["domain_or_ip", "urlhause", "feodotracker", "virustotal"]
+f = open(fileNamePath, 'w', encoding='UTF8')
+writer = csv.writer(f)
+writer.writerow(header)
 
-# print("### processing ./enrichedURLhaus.csv###")
-# with open('./enrichedURLhaus.csv', newline='') as csvfile:
-#     reader = csv.DictReader(csvfile)
-#     for row in reader:
-#         print(row)
+for eachData in splitContent:
+
+    row = []
+    row.append(eachData)
+
+    if eachData in urlhausList:
+        row.append(1)
+    else:
+        row.append(0)
+    
+    if eachData in feodoTrackerList:
+        row.append(1)
+    else:
+        row.append(0)
+    
+    if eachData in virusTotalList:
+        row.append(1)
+    else:
+        row.append(0)
+
+    writer.writerow(row)
+
+print(f"Please check {fileNamePath}")
