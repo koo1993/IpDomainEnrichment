@@ -6,6 +6,7 @@ Enrichment module for Ip and domains
 
 # Usage
 python3 \<path to python file\> -i \<path to domains/ips file\>
+Tested and developed on Ubuntu 18.04.2 LTS
 
 ## enrichmentURLhaus.py
 Bulk api pull from https://urlhaus.abuse.ch/ 
